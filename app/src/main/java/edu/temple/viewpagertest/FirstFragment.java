@@ -3,6 +3,7 @@ package edu.temple.viewpagertest;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,20 +21,11 @@ import java.net.URI;
 
 public class FirstFragment extends Fragment {
 
+    //Declaring the WebView
     private WebView mWebView;
-    private EditText editText;
-    private Button button;
 
     public FirstFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -43,12 +35,14 @@ public class FirstFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_first, container, false);
 
+        //Assigns mWebView to the WebView in design view
         mWebView = (WebView) v.findViewById(R.id.webView);
 
         //Following two lines enables Javascript
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
+        //Sets the WebViewClient to a new WebViewClient
         mWebView.setWebViewClient(new WebViewClient());
 
         return v;
@@ -56,8 +50,18 @@ public class FirstFragment extends Fragment {
 
     public void changeWebsite(String website) {
 
+        //Makes sure 'website' isn't null
         if(website != null) {
-            mWebView.loadUrl("https://" + website);
-        }
+
+            //If user did NOT type http://
+            if (!website.contains("http://")) {
+
+                website = "http://" + website;      //Adds "http://" to the string
+                mWebView.loadUrl(website);          //Loads the URL in 'website'
+            } else {                                //User DID type "https://"
+
+                mWebView.loadUrl(website);          //Load the URL in 'website'
+            } //End else-if
+        } //End if
     }
 }
